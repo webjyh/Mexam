@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Mexam 移动端在线做题组件，现只支持单选，多选，判断题类型。</title>
+    <link rel="stylesheet" href="css/normalize.css"/>
+
+    <!-- Mexam CSS && JS -->
+    <link rel="stylesheet" href="css/Mexam.css"/>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/Mexam.js"></script>
+    <!-- Mexam CSS && JS -->
+
+    <!-- Demo CSS Start -->
+    <style type="text/css">
+    body { background-color: #F7F7F7; color: #414243; font-size: 16px; line-height: 1.7; font-weight: 400; font-family: 'Open Sans','Helvetica Neue',Arial,'Hiragino Sans GB','Microsoft YaHei', sans-serif; overflow-x: hidden; }
+    a { color: #225d99; text-decoration: none; }
+    .btn { padding: 20px 20px 10px; }
+    .title { margin: 0; font-size: 16px; line-height: 44px; text-align: center; font-weight: normal; box-shadow: 0 1px 6px #ccc; background-color: #F7F7F7; height: 44px; padding: 0px 10px; }
+    button { width: 100%; outline: 0; position: relative; display: block; padding: 6px 12px; font-size: 14px; font-weight: 400; line-height: 1.42; color: #FFF; text-align: center; white-space: nowrap; vertical-align: top; cursor: pointer; background-color: #007aff; border: 1px solid #007aff; border-radius: 3px; }
+    .overlay { background: #000; width: 100%; height: 100%; overflow: hidden; position: fixed; top: 0; left: 0; z-index: 99;
+        -webkit-transition: all 300ms ease-in 0s;
+        transition: all 300ms ease-in 0s;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform: translate3d(100%, 0px, 0px);
+        transform: translate3d(100%, 0px, 0px);
+    }
+    .overlay.in {
+        -webkit-transform: translate3d(0px, 0px, 0px);
+        transform: translate3d(0px, 0px, 0px);
+    }
+    </style>
+    <!-- Demo CSS End -->
+</head>
+<body>
+    <h1 class="title">Mexam 移动端在线做题组件</h1>
+    <div class="btn"><button>点击开始答题</button></div>
+    <ol>
+        <li>本页面只适用于手机端查看</li>
+        <li>点击按钮答题</li>
+        <li>GitHub地址 <a href="https://github.com/webjyh/Mexam" target="_blank">[这里]</a></li>
+        <li>作者Blog <a href="http://webjyh.com" target="_blank">http://webjyh.com</a></li>
+    </ol>
+
+    <!-- 用于展示插件的容器 -->
+    <div class="overlay" id="overlay"></div>
+</body>
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<script type="text/javascript" src="js/Mexam.js"></script>
+<script type="text/javascript">
+    var data = [
+        {
+            id: "i88bac6k8yra-9bwr-04fq",
+            title: "单选题题目",
+            type: 1,
+            content: [
+                "选项A",
+                "选项B",
+                "选项C",
+                "选项D",
+            ]
+        },
+        {
+            id: "i88bac6k8yra-9bwr-04fq",
+            title: "多选题题目",
+            type: 2,
+            content: [
+                "选项A",
+                "选项B",
+                "选项C",
+                "选项D",
+                "选项E",
+            ]
+        },
+        {
+            id: "i88bac6k8yra-9bwr-04fq",
+            title: "判断题题目",
+            type: 4,
+            content: [
+                "选项A",
+                "选项B",
+                "选项C",
+                "选项D",
+            ]
+        },
+    ];
+    $('button').on('touchstart', function() {
+        var $elem = $('#overlay');
+        $elem.addClass('in');
+        setTimeout(function() {
+            Mexam({
+                title: 'Mexam 移动端在线做题组件',
+                data: data,
+                wrap: '#overlay',
+                close: function() {
+                    $elem.removeClass('in');
+                },
+                send: function(data, time) {
+                    var conf = confirm('确认提交答题卡？');
+                    if (conf) {
+                        alert("数据：" + JSON.stringify(data) + "\n时间：" + time);
+                        $elem.removeClass('in');
+                    } else {
+                        return false;
+                    }
+                }
+            });
+        }, 400);
+    });
+</script>
+</html>

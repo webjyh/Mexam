@@ -1,0 +1,373 @@
+/**
+ * @name     Mexam
+ * @desc     移动端题库做题插件，只支持，单选题，多选题，判断题
+ * @depend   Zepto
+ * @author   M.J
+ * @date     2015-07-09
+ * @URL      http://webjyh.com
+ * @reutn    {Mexam}
+ * @version  1.0.0
+ * @license  MIT
+ *
+ * @PS If you have any questions, please don't look for me, I don't know anything. thank you.
+ */
+@font-face {
+    font-family: "Mexam";
+    src: url('../fonts/Mexam.eot'); /* IE9*/
+    src: url('../fonts/Mexam.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../fonts/Mexam.woff') format('woff'), /* chrome、firefox */
+    url('../fonts/Mexam.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('../fonts/Mexam.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+.Mexam-icon {
+    font-family: "Mexam" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+.Mexam-liebiao:before { content: "\e602"; }
+.Mexam-shijian:before { content: "\e600"; }
+.Mexam-loading:before { content: "\e603"; }
+
+.ui-Mexam-wrapper {
+    background-color: #FFF;
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    visibility: visible;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+.ui-Mexam-wrapper > header {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 44px;
+    background-color: #31bcc1;
+}
+
+.ui-Mexam-back,
+.ui-Mexam-preview {
+    height: 44px;
+    line-height: 44px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 44px;
+}
+
+.ui-Mexam-preview {
+    left: auto;
+    right: 0px;
+}
+
+.ui-Mexam-back > a,
+.ui-Mexam-preview > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #FFF;
+    text-decoration: none;
+    text-indent: -12px;
+    font-size: 24px;
+    -webkit-transition: background .3s;
+    transition: background .3s;
+}
+
+.ui-Mexam-preview > a {
+    text-indent: 0;
+}
+
+.ui-Mexam-back a:active,
+.ui-Mexam-preview a:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.ui-Mexam-time {
+    position: absolute;
+    top: 0;
+    left: 40px;
+    right: 40px;
+    height: 44px;
+    line-height: 44px;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    color: #FFF;
+    font-weight: normal;
+}
+.ui-Mexam-time > .Mexam-icon {
+    font-size: 24px;
+}
+
+.ui-Mexam-title {
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    right: 0px;
+    padding: 0px 10px;
+    height: 40px;
+    font-size: 16px;
+    border-bottom: 3px solid #e0e0e0;
+    overflow: hidden;
+}
+
+.ui-Mexam-title > h3 {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ui-Mexam-title > span {
+    float: right;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+}
+
+.ui-Mexam-title > span > em {
+    color: #31bcc1;
+    font-size: 20px;
+    font-style: normal;
+    padding-right: 5px;
+}
+.ui-Mexam-title > span i {
+    padding-left: 5px;
+}
+
+.ui-Mexam-main,
+.ui-Mexam-loading {
+    position: absolute;
+    top: 87px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.ui-Mexam-loading {
+    z-index: 20;
+    background: #FFF;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+
+.ui-Mexam-loading.ui-Mexam-show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ui-Mexam-loading > span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    font-size: 36px;
+    margin: -18px 0px 0px -18px;
+    color: #666;
+    -webkit-animation: MexamRotate .8s linear infinite;
+            animation: doRotate .8s linear infinite;
+}
+
+.ui-Mexam-view,
+.ui-Mexam-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.ui-Mexam-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.ui-Mexam-list > li {
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.ui-Mexam-list > li > div > h2 {
+    font-weight: normal;
+    padding: 15px 15px 0px;
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.ui-Mexam-list > li > div > ol {
+    list-style: none;
+    padding: 0 0 20px 0;
+    margin: 0;
+    -webkit-transition: background 0.3s;
+    transition: background 0.3s;
+}
+
+.ui-Mexam-list > li > div > ol > li {
+    padding: 10px 15px;
+}
+
+.ui-Mexam-list > li > div > ol > li + li {
+    margin-top: 10px;
+}
+
+.ui-Mexam-list > li > div > ol > li:active {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ui-Mexam-list > li > div > ol > li > span {
+    display: block;
+    float: left;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    border: 1px solid #31bcc1;
+    color: #31bcc1;
+}
+
+.ui-Mexam-list > li > div > ol > li.active > span {
+    background-color: #31bcc1;
+    color: #FFF;
+}
+
+.ui-Mexam-list > li > div > ol > li > p {
+    margin: 0 0 0 45px;
+    font-size: 16px;
+    display: table;
+    min-height: 35px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.ui-Mexam-list > li > div > ol > li > p > span {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.ui-Mexam-buttom {
+    padding: 0px 0px 20px;
+}
+
+.ui-Mexam-buttom a {
+    display: block;
+    width: 200px;
+    margin: 0px auto;
+    text-align: center;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 5px;
+    background-color: #31bcc1;
+    color: #FFF;
+    text-decoration: none;
+}
+.ui-Mexam-buttom a:active {
+    box-shadow: inset 0px 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ui-Mexam-card {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: #FFF;
+    -webkit-transition: -webkit-transform 500ms ease-in-out 0s;
+    transition: -webkit-transform 500ms ease-in-out 0s;
+}
+
+.ui-Mexam-card.ui-Mexam-show {
+    -webkit-transform: translate3d(0px, -100%, 0px);
+    transform: translate3d(0px, -100%, 0px);
+}
+
+.ui-Mexam-card > ul {
+    margin: 0;
+    padding: 20px 0px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.ui-Mexam-card > ul:after {
+    clear: both;
+    display: table;
+    content: '';
+}
+
+.ui-Mexam-card > ul > li {
+    float: left;
+    width: 20%;
+    text-align: center;
+    list-style: none;
+    margin-bottom: 20px;
+}
+.ui-Mexam-card > ul > li a {
+    display: block;
+    margin: 0px auto;
+    color: #31bcc1;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 50%;
+    border: 1px solid #31bcc1;
+    -webkit-transition: background 0.3s;
+    transition: background 0.3s;
+    text-decoration: none;
+}
+
+.ui-Mexam-card > ul > li.active a,
+.ui-Mexam-card > ul > li a:active {
+    background: #31bcc1;
+    color: #FFF;
+}
+
+/* doRotate */
+@-webkit-keyframes MexamRotate {
+    0% { -webkit-transform: rotateZ(0); }
+    100% { -webkit-transform: rotateZ(360deg); }
+}
+@-moz-keyframes MexamRotate {
+    0% { -moz-transform: rotateZ(0); }
+    100% { -moz-transform: rotateZ(360deg); }
+}
+@-o-keyframes MexamRotate {
+    0% { -o-transform: rotateZ(0); }
+    100% { -o-transform: rotateZ(360deg); }
+}
+@keyframes MexamRotate {
+    0% { transform: rotateZ(0); }
+    100% { transform: rotateZ(360deg); }
+}
