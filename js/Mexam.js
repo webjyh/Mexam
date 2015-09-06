@@ -640,6 +640,7 @@
                     $.each(_this.answer, function(i, item) {
                         answer.push({
                             id: _this.config.data[i].id,
+                            type: _this.config.data[i].type,
                             answer: item
                         });
                     });
